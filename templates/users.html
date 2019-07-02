@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>MEET Admin Home</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="/static/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom fonts for this template -->
+    <link href="/static/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+
+    <link href="/static/css/edits.css" rel="stylesheet" type="text/css">
+
+    <!-- Custom styles for this template -->
+    <link href="/static/css/clean-blog.min.css" rel="stylesheet">
+
+  </head>
+
+  <body>
+
+    <!-- Navigation -->
+    <div id="admin_nav"></div>
+
+    <!-- Page Header -->
+    <header class="masthead" style="background-image: url('/static/img/home-bg.jpg')">
+      <div class="overlay"></div>
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-8 col-md-10 mx-auto">
+            <div class="site-heading">
+              <h1>User Edits Page</h1>
+              <!-- <span class="subheading">Access learning materials here</span> -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-8 col-md-10 mx-auto">
+          
+
+          <center>
+
+
+            <div class = "container">
+              <div class="wrapper">
+                <form action="/{{ access }}/users" method="POST" name="Create_Form" class="form-signin">       
+                    <h3 class="form-signin-heading">Enter new user information:</h3>
+                    <hr class="colorgraph"><br>
+                    
+                    <input type="text" class="form-control" name="email" placeholder="MEET Email" required="required" autofocus="" />
+                    <input type="text" class="form-control" name="name" placeholder="Full Name" required="required" autofocus="" />
+
+                    <input type="password" class="form-control" name="password" placeholder="Password" required="required"/>  
+                    <input type="password" class="form-control" name="password-two" placeholder="Confirm Password" required="required"/>   
+
+                    <center>
+                    <select required="required" name="access">
+                      <option value="y1">Year 1</option>
+                      <option value="y2">Year 2</option>
+                      <option value="y3">Year 3</option>
+                      <option value="admin">Admin</option>
+                      {% if access == "superadmin" %}
+                      <option value="superadmin">SuperAdmin</option>
+                      {% endif %}
+                    </select>
+
+
+                    <select required="required" name="location">
+                      <option value="MEETx">MEETx</option>
+                      <option value="Jerusalem">Jerusalem</option>
+                      <option value="Nazareth">Nazareth</option>
+                      <option value="N/A">N/A (Admin)</option>
+                    </select>
+
+                    </center>
+
+                    <br>
+
+                    {% if error %}
+                    <center>
+                      <p><font color="red"><strong>{{ error }}</strong></font></p>
+                      <br>
+                    </center>
+                    {% endif %}
+
+                   
+                    <button class="btn btn-lg btn-primary btn-block"  name="Submit" value="Login" type="submit">Create User</button>        
+                </form>     
+              </div>
+            </div>
+
+
+          <div class="container">
+            
+<!--             <div class="row">
+              <div class="col-sm">
+                Name
+              </div>
+              <div class="col-sm">
+                Email
+              </div>
+              <div class="col-sm">
+                Access
+              </div>
+              <div class="col-sm">
+                Authenticated?
+              </div>
+              <div class="col-sm">
+                Delete User
+              </div>
+            </div> -->
+
+            <p><strong>Graduate Students:</strong></p>
+                <form method="POST" action="/{{ access }}/users/graduate" class="inline">
+                    <input type="radio" name="grads" value="y3" checked> Year3 &nbsp;&nbsp;
+                    <input type="radio" name="grads" value="y2"> Year2 &nbsp;&nbsp;
+                    <input type="radio" name="grads" value="y1"> Year1 &nbsp;&nbsp;
+                    <input type="radio" name="grads" value="all"> All <br> <br>
+                  <button type="submit" name="submit_param" value="submit_value" class="link-button">
+                    Graduate
+                  </button>
+                </form>
+
+
+
+
+          <br>
+          <p><strong>Users:</strong></p>
+
+          {% for user in users %}
+
+
+            <div class="row" style="border:1px solid black;">
+              <div class="col-sm" >
+                {{ user.name }}
+              </div>
+              <div class="col-sm" >
+                {{ user.email }}
+              </div>
+              <div class="col-sm" >
+                {{ user.access }}
+              </div>
+              <div class="col-sm" >
+                {{ user.location }}
+              </div>
+
+              <div class="col-sm" >
+                <form method="POST" action="/{{ access }}/users/remove" class="inline">
+                  <input type="hidden" name="email" value="{{ user.email }}">
+                  <button type="submit" name="submit_param" value="submit_value" class="link-button">
+                    Remove
+                  </button>
+                </form>
+              </div>
+
+              
+
+            </div>
+          
+
+          {% endfor %}
+          </div>
+
+
+
+          
+          </center>
+
+        </div>
+      </div>
+    </div>
+
+    <hr>
+
+    <!-- Footer -->
+    <footer>
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-8 col-md-10 mx-auto">
+            <p class="copyright text-muted">Copyright &copy; Me 2019</p>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <!-- Bootstrap core JavaScript -->
+    <script src="/static/vendor/jquery/jquery.min.js"></script>
+    <script src="/static/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Custom scripts for this template -->
+    <script src="/static/js/clean-blog.min.js"></script>
+
+    <script>
+      $(document).ready( function() {
+          $("#admin_nav").load("/templates/{{ access }}/all/admin_nav.html");
+      });
+    </script>
+
+  </body>
+
+</html>

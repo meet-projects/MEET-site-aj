@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>MEET Admin Home</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="/static/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom fonts for this template -->
+    <link href="/static/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+
+    <link href="/static/css/edits.css" rel="stylesheet" type="text/css">
+
+    <!-- Custom styles for this template -->
+    <link href="/static/css/clean-blog.min.css" rel="stylesheet">
+
+  </head>
+
+  <body>
+
+    <!-- Navigation -->
+    <div id="admin_nav"></div>
+
+    <!-- Page Header -->
+    <header class="masthead" style="background-image: url('/static/img/home-bg.jpg')">
+      <div class="overlay"></div>
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-8 col-md-10 mx-auto">
+            <div class="site-heading">
+              <h1>Material Edits Page</h1>
+              <!-- <span class="subheading">Access learning materials here</span> -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-8 col-md-10 mx-auto">
+          
+
+          <center>
+
+
+          {% if editing == "announce" %}
+
+          <div class = "container">
+            <div class="wrapper">
+              <form action="/{{ access }}/announcement" method="POST" name="Addition_Form" >       
+                  <h5 class="form-signin-heading">Please enter an announcement name and statment.</h5>
+                  
+                  <input type="text" class="form-control" name="name" placeholder="Announcment Name" required="required" autofocus="" />
+                  <input type="text" class="form-control" name="statement" placeholder="Statement" required="required" autofocus="" />
+
+                  <br>
+
+                  <input type="radio" name="view" value="y1" checked> Year1 &nbsp;&nbsp;
+                  <input type="radio" name="view" value="y2"> Year2 &nbsp;&nbsp;
+                  <input type="radio" name="view" value="y3"> Year3 &nbsp;&nbsp;
+                  <input type="radio" name="view" value="public"> Public <br> <br>
+                  
+
+                  <button class="btn btn-lg btn-primary btn-block"  name="Submit" value="Submit" type="submit">Submit Announcement</button>        
+              </form>     
+            </div>
+
+            <h5>Load Announcements:</h5>
+
+            <div>
+
+              <input type="radio" name="view" value="y1" class="check_box"> Year1 &nbsp;&nbsp;
+              <input type="radio" name="view" value="y2" class="check_box"> Year2 &nbsp;&nbsp;
+              <input type="radio" name="view" value="y3" class="check_box"> Year3 &nbsp;&nbsp;
+              <input type="radio" name="view" value="public" class="check_box"> Public <br> <br>
+            </div>
+
+
+            <div id="announcer">
+              
+            </div>
+
+          </div>
+
+
+
+
+
+
+          {% else %}
+          {% if options == True %}
+
+          
+            <h5>Group: {{ editing.capitalize() }}</h5>
+
+            {% for link, name in groups.items() %}
+
+            <p><a href="/{{ access }}/edits/{{ editing }}/{{ link }}">{{ name }}</a></p>
+
+
+
+            {% endfor %}
+
+          {% else %}
+
+          <h5>Group: {{ editing.capitalize() }} {{ assign_name }}</h5>
+
+
+              <div class = "container">
+                <div class="wrapper">
+                  <form action="/{{ access }}/add-material/{{ editing }}/{{ assignment }}" method="POST" name="Addition_Form" >       
+                      <h5 class="form-signin-heading">Please enter the document link and lecture name.</h5>
+                      
+                      <input type="text" class="form-control" name="link" placeholder="Slides Link" required="required" autofocus="" />
+                      <input type="text" class="form-control" name="name" placeholder="Lecture Name" required="required" autofocus="" />
+
+                      <br>
+                      <h6>Please select an embedded document type:</h6>
+                      <input type="radio" name="lec_type" value="slide" class="check_box" checked> Google Slides &nbsp;&nbsp;
+                      <input type="radio" name="lec_type" value="document" class="check_box"> Google Doc &nbsp;&nbsp;
+                      <input type="radio" name="lec_type" value="youtube" class="check_box"> Youtube link<br> <br>
+
+
+                      <h6>Students:</h6>
+                      <input type="radio" name="location" value="all" class="check_box" checked> All &nbsp;&nbsp;
+                      <input type="radio" name="location" value="MEETx" class="check_box"> MEETx &nbsp;&nbsp;
+
+                      <input type="radio" name="location" value="Jerusalem" class="check_box"> Jerusalem &nbsp;&nbsp;
+
+                      <input type="radio" name="location" value="Nazareth" class="check_box"> Nazareth<br> <br>
+
+
+                      <button class="btn btn-lg btn-primary btn-block"  name="Submit" value="Submit" type="submit">Submit Lecture</button>        
+                  </form>     
+                </div>
+              </div>
+
+              <br>
+              <br>
+              <h4>Existing Lectures:</h4>
+
+
+              {% for lecture in existing %}
+
+                <p>{{ lecture.name }}</p>
+                <p>Location: {{ lecture.location }}</p>
+
+                <form method="POST" action="/{{ access }}/delete-material/{{ editing }}/{{ assignment }}" class="inline">
+                  <input type="hidden" name="name" value="{{ lecture.name }}">
+                  <input type="hidden" name="link" value="{{ lecture.link }}">
+                  <button type="submit" name="submit_param" value="submit_value" class="link-button">
+                    Delete
+                  </button>
+                </form>
+
+                <br>
+
+                {% if lecture.slides %}
+
+                <iframe src="{{ lecture.link }}" frameborder="0" width=80% height="600" allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true"></iframe>
+                
+
+                {% else %}
+
+                <iframe src="{{ lecture.link }}" width=100% height="600"></iframe>
+
+
+                {% endif %}
+
+              {% endfor %}
+
+
+
+            {% endif %}
+          {% endif %}
+          </center>
+
+        </div>
+      </div>
+    </div>
+
+    <hr>
+
+    <!-- Footer -->
+    <footer>
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-8 col-md-10 mx-auto">
+            <p class="copyright text-muted">Copyright &copy; Me 2019</p>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <!-- Bootstrap core JavaScript -->
+    <script src="/static/vendor/jquery/jquery.min.js"></script>
+    <script src="/static/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Custom scripts for this template -->
+    <script src="/static/js/clean-blog.min.js"></script>
+
+    <script>
+      $(document).ready( function() {
+          $("#admin_nav").load("/templates/{{ access }}/all/admin_nav.html");
+      });
+    </script>
+
+
+    <script type="text/javascript">
+
+      $(document).ready(function(){
+        $("input.check_box").click(function(){
+          // alert("Click event triggered for group " + this.value);
+          $("#announcer").load("/announcer/{{ access }}/" + this.value);
+        });
+      });
+    </script>
+
+  </body>
+
+</html>

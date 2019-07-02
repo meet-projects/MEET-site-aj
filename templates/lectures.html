@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>MEET {{ access.capitalize() }} Materials</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="/static/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom fonts for this template -->
+    <link href="/static/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+
+    <link href="/static/css/edits.css" rel="stylesheet" type="text/css">
+
+    <!-- Custom styles for this template -->
+    <link href="/static/css/clean-blog.min.css" rel="stylesheet">
+
+
+  </head>
+
+  <body>
+
+    <!-- Navigation -->
+    <div id="student_nav"></div>
+
+    <!-- Page Header -->
+    <header class="masthead" style="background-image: url('/static/img/home-{{ access }}.jpg')">
+      <div class="overlay"></div>
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-8 col-md-10 mx-auto">
+            <div class="site-heading">
+              <h1>MEET {{ access.capitalize() }} Materials</h1>
+              <!-- <span class="subheading">Access learning materials here</span> -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="container">
+
+
+      <div class="row">
+      	<div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+      		<div class = "sticky-top">
+      			<br />
+	      		<h4>Navigation</h4>
+	      		{% for lecture in lectures %}
+			  	  <a class="nav-link" href="#{{ lecture.name }}" aria-selected="true" role="tab">{{lecture.name}}</a>
+			  	 {% endfor %}
+			  </div>
+	     </div>
+
+
+        <div class="col-lg-8 col-md-10 mx-auto">
+
+          <h4>{{ access.capitalize() }} {{ header }}</h4>
+          <hr>
+          <br>
+
+          
+
+          {% for lecture in lectures %}
+
+            <h5 id = '{{ lecture.name }}'>{{ lecture.name }}</h5>
+
+            <br>
+            {% if lecture.lec_type == "slide" %}
+            <iframe src="{{ lecture.link }}" frameborder="0" width=100% height="600" allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true"></iframe>
+            {% endif %}
+
+            {% if lecture.lec_type == "document" %}
+            <iframe src="{{ lecture.link }}" width=100% height=700></iframe>
+            {% endif %}
+
+            {% if lecture.lec_type == "youtube" %}
+            <iframe width=100% height="600" src="{{ lecture.link }}" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            {% endif %}
+
+            <br>
+            <br>
+
+            <hr>
+                
+
+          {% endfor %}
+
+
+        </div>
+      </div>
+    </div>
+
+    <hr>
+
+    <!-- Footer -->
+    <footer>
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-8 col-md-10 mx-auto">
+            <p class="copyright text-muted">Copyright &copy; Me 2019</p>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <!-- Bootstrap core JavaScript -->
+    <script src="/static/vendor/jquery/jquery.min.js"></script>
+    <script src="/static/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Custom scripts for this template -->
+    <script src="/static/js/clean-blog.min.js"></script>
+
+    <script>
+      $(document).ready( function() {
+          $("#student_nav").load("/templates/{{ access }}/{{ location }}/student_nav.html");
+      });
+    </script>
+
+  </body>
+
+</html>

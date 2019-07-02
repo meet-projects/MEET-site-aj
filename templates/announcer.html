@@ -1,0 +1,24 @@
+{% for announcement in announcements %}
+<div class="post-preview">
+    <h2 class="post-title">
+      {{ announcement.name }}
+    </h2>
+    <h5 class="post-subtitle" style="color:grey;">
+      {{ announcement.text }}
+    </h5>
+  <p class="post-meta">Posted by <strong>{{ announcement.poster }}</strong> on {{ announcement.announced.day }}-{{ announcement.announced.month }}-{{ announcement.announced.year }}</p>
+
+  {% if "admin" in access %}
+
+  <form method="POST" action="/{{ access }}/announcement/remove" class="inline">
+    <input type="hidden" name="announcement_id" value="{{ announcement.id }}">
+    <button type="submit" name="submit_param" value="submit_value" class="link-button">
+      Delete
+    </button>
+  </form>
+
+  <br>
+  {% endif %}
+</div>
+<hr>
+{% endfor %}
