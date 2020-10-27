@@ -6,7 +6,7 @@ bs4==0.0.1
 cffi==1.11.5
 cheroot==6.5.4
 Click==7.0
-cryptography==2.4.2
+cryptography==3.2
 cycler==0.10.0
 ecdsa==0.13
 filelock==3.0.10
