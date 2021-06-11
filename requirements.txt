@@ -44,5 +44,5 @@ SQLAlchemy==1.2.15
 uuid==1.30
 uWSGI==2.0.17.1
 virtualenv==16.1.0
-websockets==7.0
+websockets==9.1
 Werkzeug==0.14.1
